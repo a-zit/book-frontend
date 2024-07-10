@@ -27,3 +27,7 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## After Build Setup
+
+navigate to the "book-backend" folder and run the project command to start the server
