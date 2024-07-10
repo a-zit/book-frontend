@@ -1,13 +1,12 @@
 <template>
     <div id="app" class="book-list-container">
-
-        <div class="create-book-button-container">
-            <button class="btn btn-success btn-sm create-book-button" @click="showCreateModal()">Create Book</button>
-        </div>
-
         <div v-if="loading" class="loading-text">{{ loadingText }}</div>
         <div v-else-if="error" class="error">{{ error }}</div>
         <div v-else>
+            <div class="create-book-button-container">
+                <button class="btn btn-success btn-sm create-book-button" @click="showCreateModal()">Create
+                    Book</button>
+            </div>
             <div class="book-list-header row">
                 <div class="col-2 header-item image-header">Image</div>
                 <div class="col-2 header-item title-header">Title</div>
