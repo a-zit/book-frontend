@@ -1,9 +1,6 @@
 <template>
     <div id="app" class="book-list-container">
 
-        <!-- Include Bootstrap CSS in your HTML file -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
         <div class="create-book-button-container">
             <button class="btn btn-success btn-sm create-book-button" @click="showCreateModal()">Create Book</button>
         </div>
@@ -27,7 +24,8 @@
                     <div class="col-2 book-author">{{ book.author }}</div>
                     <div class="col-2 book-year-of-publication">{{ book.year_of_publication }}</div>
                     <div class="col-2 book-actions">
-                        <button class="btn btn-danger btn-sm delete-button" @click="showConfirmModal(book)">Delete</button>
+                        <button class="btn btn-danger btn-sm delete-button"
+                            @click="showConfirmModal(book)">Delete</button>
                         <button class="btn btn-primary btn-sm edit-button" @click="showEditModal(book)">Edit</button>
                     </div>
                 </li>
@@ -76,19 +74,29 @@ export default defineComponent({
 
         const fetchData = async () => {
             try {
+                updateLoadingText();
                 const response = await axios.get('http://localhost:9000/api/books/');
                 books.value = response.data;
+
+                setTimeout(() => {
+                    loading.value = false;
+                }, 1000);
             } catch (error) {
-                if (error.response) {
-                    error = `Error: ${error.response.status} - ${error.response.statusText}`;
-                } else if (error.request) {
-                    error = 'Network Error: No response received from the server';
-                } else {
-                    error = `Error: ${error.message}`;
-                }
+                handleError(error)
             } finally {
                 loading.value = true
             }
+        };
+
+        const handleError = (err) => {
+            if (err.response) {
+                error.value = `Error: ${err.response.status} - ${err.response.statusText}`;
+            } else if (err.request) {
+                error.value = 'Network Error: No response received from the server';
+            } else {
+                error.value = `Error: ${err.message}`;
+            }
+            loading.value = false;
         };
 
         const showDetails = (book) => {
@@ -180,12 +188,12 @@ export default defineComponent({
                     loadingText.value = 'Loading';
                     count = 0;
                 }
-            }, 100);
+            }, 500);
 
             setTimeout(() => {
                 clearInterval(intervalId);
                 loading.value = false;
-            }, 1000);
+            }, 5000);
         }
 
         const showConfirmModal = (book) => {
@@ -193,10 +201,7 @@ export default defineComponent({
             selectedBookId.value = book.id;
         }
 
-        onMounted(async () => {
-            updateLoadingText();
-            await fetchData();
-        });
+        onMounted(fetchData);
 
         return {
             loading,
@@ -205,21 +210,16 @@ export default defineComponent({
             error,
             fetchData,
             deleteBook,
-            // Detail's returning
             showDetails,
             isModalVisible,
             selectedBook,
-            // Create's returning
             isFormModalVisible,
             showCreateModal,
             createBook,
-            // Edit's returning
             showEditModal,
             editBook,
-            // Error's returning
             isErrorModalVisible,
             errorMessage,
-            // Confirm's returning
             showConfirmModal,
             isConfirmModalVisible,
             selectedBookId,
@@ -241,15 +241,10 @@ export default defineComponent({
 .book-list-header {
     display: flex;
     margin-bottom: 20px;
-    /* Increased bottom margin */
     padding: 15px;
-    /* Increased padding for more space */
     background-color: #007bff;
-    /* Changed to a pleasant blue */
     color: #ffffff;
-    /* Text color changed to white */
     border-radius: 5px;
-    /* Rounded corners */
 }
 
 .header-item {
@@ -260,12 +255,10 @@ export default defineComponent({
 
 .image-header {
     flex: 0 0 100px;
-    /* Adjusted width for the image column */
 }
 
 .actions-header {
     flex: 0 0 220px;
-    /* Adjusted based on the width of your buttons */
 }
 
 .book-list {
@@ -278,29 +271,20 @@ export default defineComponent({
     align-items: center;
     margin-bottom: 20px;
     padding: 10px;
-    /* Added padding */
     border-bottom: 1px solid #eee;
-    /* Lighter border color */
     transition: transform 0.2s ease;
-    /* Added transform transition for hover effect */
 }
 
 .book-item:hover {
     transform: translateY(-5px);
-    /* Slight raise effect on hover */
     background-color: #f9f9f9;
-    /* Very light grey background on hover */
 }
 
 .book-image {
     width: 100px;
-    /* Adjusted width */
     height: 140px;
-    /* Adjusted height */
     object-fit: cover;
-    /* Ensure the image covers the area */
     border-radius: 5px;
-    /* Rounded corners for images */
     margin-right: 20px;
 }
 
@@ -320,30 +304,23 @@ export default defineComponent({
 
 .btn {
     padding: 5px 15px;
-    /* Adjusted padding */
     font-size: 14px;
-    /* Adjusted font size */
     border-radius: 5px;
-    /* Rounded corners for buttons */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Added shadow for depth */
 }
 
 .delete-button,
 .edit-button {
     transition: transform 0.2s;
-    /* Smooth transition for hover effect */
 }
 
 .delete-button:hover,
 .edit-button:hover {
     transform: scale(1.05);
-    /* Slightly enlarge buttons on hover */
 }
 
 .delete-button {
     background-color: #dc3545;
-    /* Kept red background for delete button */
 }
 
 .edit-button {

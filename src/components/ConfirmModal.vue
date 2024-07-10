@@ -61,30 +61,23 @@ export default defineComponent({
 
 .btn {
     padding: 5px 15px;
-    /* Adjusted padding */
     font-size: 14px;
-    /* Adjusted font size */
     border-radius: 5px;
-    /* Rounded corners for buttons */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Added shadow for depth */
 }
 
 .delete-button,
 .cancel-button {
     transition: transform 0.2s;
-    /* Smooth transition for hover effect */
 }
 
 .delete-button:hover,
 .cancel-button:hover {
     transform: scale(1.05);
-    /* Slightly enlarge buttons on hover */
 }
 
 .delete-button {
     background-color: #dc3545;
-    /* Kept red background for delete button */
 }
 
 .button-action {

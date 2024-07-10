@@ -28,6 +28,6 @@ npm run dev
 npm run build
 ```
 
-## After Build Setup
+## After Build Setup for connect to backend
 
-navigate to the "book-backend" folder and run the project command to start the server
+Navigate to the "book-backend" folder and run the project command to start the server
